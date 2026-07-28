@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { fetchJson, getApiBaseUrl } from '../api.js';
+import { getApiBaseUrl } from '../api.js';
 
 function Workouts() {
   const [workouts, setWorkouts] = useState([]);
@@ -11,9 +11,15 @@ function Workouts() {
 
     async function loadWorkouts() {
       try {
-        const data = await fetchJson('/api/workouts/');
+        const response = await fetch(`${getApiBaseUrl()}/api/workouts/`);
+
+        if (!response.ok) {
+          throw new Error(`Request failed with status ${response.status}`);
+        }
+
+        const data = await response.json();
         if (active) {
-          setWorkouts(data);
+          setWorkouts(Array.isArray(data) ? data : data.results || data.items || data.data || []);
         }
       } catch (err) {
         if (active) {

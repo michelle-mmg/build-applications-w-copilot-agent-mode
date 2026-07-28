@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { fetchJson, getApiBaseUrl } from '../api.js';
+import { getApiBaseUrl } from '../api.js';
 
 function Teams() {
   const [teams, setTeams] = useState([]);
@@ -11,9 +11,15 @@ function Teams() {
 
     async function loadTeams() {
       try {
-        const data = await fetchJson('/api/teams/');
+        const response = await fetch(`${getApiBaseUrl()}/api/teams/`);
+
+        if (!response.ok) {
+          throw new Error(`Request failed with status ${response.status}`);
+        }
+
+        const data = await response.json();
         if (active) {
-          setTeams(data);
+          setTeams(Array.isArray(data) ? data : data.results || data.items || data.data || []);
         }
       } catch (err) {
         if (active) {
