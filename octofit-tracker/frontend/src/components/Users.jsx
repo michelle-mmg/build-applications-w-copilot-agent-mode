@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { buildApiUrl, extractItems } from '../api.js';
+import { extractItems, getApiBaseUrl } from '../api.js';
 
 function Users() {
   const [users, setUsers] = useState([]);
@@ -11,7 +11,8 @@ function Users() {
 
     async function loadUsers() {
       try {
-        const response = await fetch(buildApiUrl('users'));
+        const endpoint = '/api/users/';
+        const response = await fetch(`${getApiBaseUrl()}${endpoint}`);
 
         if (!response.ok) {
           throw new Error(`Request failed with status ${response.status}`);

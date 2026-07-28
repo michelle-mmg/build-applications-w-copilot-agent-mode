@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { buildApiUrl, extractItems } from '../api.js';
+import { extractItems, getApiBaseUrl } from '../api.js';
 
 function Leaderboard() {
   const [entries, setEntries] = useState([]);
@@ -11,7 +11,8 @@ function Leaderboard() {
 
     async function loadLeaderboard() {
       try {
-        const response = await fetch(buildApiUrl('leaderboard'));
+        const endpoint = '/api/leaderboard/';
+        const response = await fetch(`${getApiBaseUrl()}${endpoint}`);
 
         if (!response.ok) {
           throw new Error(`Request failed with status ${response.status}`);
