@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { fetchJson, getApiBaseUrl } from '../api.js';
 
 function Teams() {
   const [teams, setTeams] = useState([]);
@@ -10,19 +11,9 @@ function Teams() {
 
     async function loadTeams() {
       try {
-        const endpoint = '/api/teams/';
-        const baseUrl = import.meta.env.VITE_CODESPACE_NAME
-          ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev`
-          : 'http://localhost:8000';
-        const response = await fetch(`${baseUrl}${endpoint}`);
-
-        if (!response.ok) {
-          throw new Error(`Request failed with status ${response.status}`);
-        }
-
-        const data = await response.json();
+        const items = await fetchJson('teams');
         if (active) {
-          setTeams(extractItems(data));
+          setTeams(items);
         }
       } catch (err) {
         if (active) {

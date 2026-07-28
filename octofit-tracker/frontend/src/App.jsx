@@ -35,7 +35,7 @@ function App() {
           </div>
 
           <div className="alert alert-info" role="status">
-            Define <code>VITE_CODESPACE_NAME</code> in <code>.env.local</code> to use the Codespaces URL format. If it is unset, the app falls back to localhost.
+            Define <code>VITE_CODESPACE_NAME</code> in <code>.env.local</code> (or <code>.env</code>) before running the app. If it is unset, the app falls back to localhost so the URLs stay safe and predictable.
           </div>
 
           <nav className="nav nav-pills flex-wrap gap-2 mb-4">

@@ -32,6 +32,10 @@ export function extractItems(payload) {
     return payload.data;
   }
 
+  if (payload?.results && Array.isArray(payload.results.results)) {
+    return payload.results.results;
+  }
+
   return [];
 }
 
