@@ -59,7 +59,7 @@ app.post(['/api/activities', '/api/activities/'], async (req: Request, res: Resp
   res.status(201).json(activity);
 });
 
-app.get('/api/leaderboard', async (_req: Request, res: Response) => {
+app.get(['/api/leaderboard', '/api/leaderboard/'], async (_req: Request, res: Response) => {
   const leaderboard = await Leaderboard.find({}).sort({ rank: 1 }).lean();
   res.json(leaderboard);
 });
