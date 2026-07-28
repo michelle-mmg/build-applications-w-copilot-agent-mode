@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getApiBaseUrl } from '../api.js';
+import { buildApiUrl, extractItems } from '../api.js';
 
 function Users() {
   const [users, setUsers] = useState([]);
@@ -11,7 +11,7 @@ function Users() {
 
     async function loadUsers() {
       try {
-        const response = await fetch(`${getApiBaseUrl()}/api/users/`);
+        const response = await fetch(buildApiUrl('users'));
 
         if (!response.ok) {
           throw new Error(`Request failed with status ${response.status}`);
@@ -19,7 +19,7 @@ function Users() {
 
         const data = await response.json();
         if (active) {
-          setUsers(Array.isArray(data) ? data : data.results || data.items || data.data || []);
+          setUsers(extractItems(data));
         }
       } catch (err) {
         if (active) {

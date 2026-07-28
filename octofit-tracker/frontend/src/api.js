@@ -1,16 +1,18 @@
-const normalizePath = (path) => {
-  const trimmed = path.replace(/^\/+|\/+$/g, '');
-  return trimmed.startsWith('api/') ? trimmed : `api/${trimmed}`;
-};
+const normalizeComponent = (component) => component.replace(/^\/+|\/+$/g, '');
 
 export function getApiBaseUrl() {
   const codespaceName = import.meta.env.VITE_CODESPACE_NAME?.trim();
-  return codespaceName ? `https://${codespaceName}-8000.app.github.dev` : 'http://localhost:8000';
+
+  if (codespaceName) {
+    return `https://${codespaceName}-8000.app.github.dev`;
+  }
+
+  return 'http://localhost:8000';
 }
 
 export function buildApiUrl(component) {
-  const path = normalizePath(component);
-  return `${getApiBaseUrl()}/${path}/`;
+  const normalizedComponent = normalizeComponent(component);
+  return `${getApiBaseUrl()}/api/${normalizedComponent}/`;
 }
 
 export function extractItems(payload) {

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getApiBaseUrl } from '../api.js';
+import { buildApiUrl, extractItems } from '../api.js';
 
 function Activities() {
   const [activities, setActivities] = useState([]);
@@ -11,7 +11,7 @@ function Activities() {
 
     async function loadActivities() {
       try {
-        const response = await fetch(`${getApiBaseUrl()}/api/activities/`);
+        const response = await fetch(buildApiUrl('activities'));
 
         if (!response.ok) {
           throw new Error(`Request failed with status ${response.status}`);
@@ -19,7 +19,7 @@ function Activities() {
 
         const data = await response.json();
         if (active) {
-          setActivities(Array.isArray(data) ? data : data.results || data.items || data.data || []);
+          setActivities(extractItems(data));
         }
       } catch (err) {
         if (active) {
