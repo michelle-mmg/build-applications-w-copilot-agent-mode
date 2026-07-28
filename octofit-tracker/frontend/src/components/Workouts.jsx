@@ -11,7 +11,7 @@ function Workouts() {
 
     async function loadWorkouts() {
       try {
-        const data = await fetchJson('workouts');
+        const data = await fetchJson('/api/workouts/');
         if (active) {
           setWorkouts(data);
         }

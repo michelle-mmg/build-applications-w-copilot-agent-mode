@@ -1,4 +1,7 @@
-const normalizePath = (path) => path.replace(/^\/+|\/+$/g, '');
+const normalizePath = (path) => {
+  const trimmed = path.replace(/^\/+|\/+$/g, '');
+  return trimmed.startsWith('api/') ? trimmed : `api/${trimmed}`;
+};
 
 export function getApiBaseUrl() {
   const codespaceName = import.meta.env.VITE_CODESPACE_NAME?.trim();
@@ -7,7 +10,7 @@ export function getApiBaseUrl() {
 
 export function buildApiUrl(component) {
   const path = normalizePath(component);
-  return `${getApiBaseUrl()}/api/${path}/`;
+  return `${getApiBaseUrl()}/${path}/`;
 }
 
 export function extractItems(payload) {

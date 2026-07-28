@@ -11,7 +11,7 @@ function Teams() {
 
     async function loadTeams() {
       try {
-        const data = await fetchJson('teams');
+        const data = await fetchJson('/api/teams/');
         if (active) {
           setTeams(data);
         }

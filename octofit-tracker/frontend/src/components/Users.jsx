@@ -11,7 +11,7 @@ function Users() {
 
     async function loadUsers() {
       try {
-        const data = await fetchJson('users');
+        const data = await fetchJson('/api/users/');
         if (active) {
           setUsers(data);
         }

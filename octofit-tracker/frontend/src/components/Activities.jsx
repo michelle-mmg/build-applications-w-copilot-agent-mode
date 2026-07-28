@@ -11,7 +11,7 @@ function Activities() {
 
     async function loadActivities() {
       try {
-        const data = await fetchJson('activities');
+        const data = await fetchJson('/api/activities/');
         if (active) {
           setActivities(data);
         }
