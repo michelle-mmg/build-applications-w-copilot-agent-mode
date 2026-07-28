@@ -11,11 +11,13 @@ const activity_js_1 = require("./models/activity.js");
 const leaderboard_js_1 = require("./models/leaderboard.js");
 const workout_js_1 = require("./models/workout.js");
 const app = (0, express_1.default)();
-const PORT = process.env.PORT || 8000;
+const PORT = Number(process.env.PORT) || 8000;
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/octofit_db';
 function getApiBaseUrl() {
     const codespaceName = process.env.CODESPACE_NAME;
-    return codespaceName ? `https://${codespaceName}-8000.app.github.dev` : 'http://localhost:8000';
+    return codespaceName
+        ? `https://${codespaceName}-8000.app.github.dev`
+        : `http://localhost:${PORT}`;
 }
 app.use(express_1.default.json());
 app.get('/api/health', (_req, res) => {
@@ -26,11 +28,11 @@ app.get('/api/health', (_req, res) => {
         apiUrl: getApiBaseUrl(),
     });
 });
-app.get('/api/users/', async (_req, res) => {
+app.get(['/api/users', '/api/users/'], async (_req, res) => {
     const users = await user_js_1.User.find({}).lean();
     res.json(users);
 });
-app.post('/api/users/', async (req, res) => {
+app.post(['/api/users', '/api/users/'], async (req, res) => {
     const user = await user_js_1.User.create(req.body);
     res.status(201).json(user);
 });
@@ -42,11 +44,11 @@ app.post('/api/teams/', async (req, res) => {
     const team = await team_js_1.Team.create(req.body);
     res.status(201).json(team);
 });
-app.get('/api/activities/', async (_req, res) => {
+app.get(['/api/activities', '/api/activities/'], async (_req, res) => {
     const activities = await activity_js_1.Activity.find({}).lean();
     res.json(activities);
 });
-app.post('/api/activities/', async (req, res) => {
+app.post(['/api/activities', '/api/activities/'], async (req, res) => {
     const activity = await activity_js_1.Activity.create(req.body);
     res.status(201).json(activity);
 });

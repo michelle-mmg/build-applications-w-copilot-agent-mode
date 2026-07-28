@@ -7,12 +7,14 @@ import { Leaderboard } from './models/leaderboard.js';
 import { Workout } from './models/workout.js';
 
 const app = express();
-const PORT = process.env.PORT || 8000;
+const PORT = Number(process.env.PORT) || 8000;
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/octofit_db';
 
 function getApiBaseUrl() {
   const codespaceName = process.env.CODESPACE_NAME;
-  return codespaceName ? `https://${codespaceName}-8000.app.github.dev` : 'http://localhost:8000';
+  return codespaceName
+    ? `https://${codespaceName}-8000.app.github.dev`
+    : `http://localhost:${PORT}`;
 }
 
 app.use(express.json());
@@ -26,12 +28,12 @@ app.get('/api/health', (_req: Request, res: Response) => {
   });
 });
 
-app.get('/api/users/', async (_req: Request, res: Response) => {
+app.get(['/api/users', '/api/users/'], async (_req: Request, res: Response) => {
   const users = await User.find({}).lean();
   res.json(users);
 });
 
-app.post('/api/users/', async (req: Request, res: Response) => {
+app.post(['/api/users', '/api/users/'], async (req: Request, res: Response) => {
   const user = await User.create(req.body);
   res.status(201).json(user);
 });
@@ -46,12 +48,12 @@ app.post('/api/teams/', async (req: Request, res: Response) => {
   res.status(201).json(team);
 });
 
-app.get('/api/activities/', async (_req: Request, res: Response) => {
+app.get(['/api/activities', '/api/activities/'], async (_req: Request, res: Response) => {
   const activities = await Activity.find({}).lean();
   res.json(activities);
 });
 
-app.post('/api/activities/', async (req: Request, res: Response) => {
+app.post(['/api/activities', '/api/activities/'], async (req: Request, res: Response) => {
   const activity = await Activity.create(req.body);
   res.status(201).json(activity);
 });
