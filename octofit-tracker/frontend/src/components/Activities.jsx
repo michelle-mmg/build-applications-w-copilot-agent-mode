@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { extractItems, getApiBaseUrl } from '../api.js';
 
 function Activities() {
   const [activities, setActivities] = useState([]);
@@ -12,7 +11,10 @@ function Activities() {
     async function loadActivities() {
       try {
         const endpoint = '/api/activities/';
-        const response = await fetch(`${getApiBaseUrl()}${endpoint}`);
+        const baseUrl = import.meta.env.VITE_CODESPACE_NAME
+          ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev`
+          : 'http://localhost:8000';
+        const response = await fetch(`${baseUrl}${endpoint}`);
 
         if (!response.ok) {
           throw new Error(`Request failed with status ${response.status}`);
