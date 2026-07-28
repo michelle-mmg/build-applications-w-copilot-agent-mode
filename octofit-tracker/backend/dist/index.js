@@ -12,6 +12,7 @@ const leaderboard_js_1 = require("./models/leaderboard.js");
 const workout_js_1 = require("./models/workout.js");
 const app = (0, express_1.default)();
 const PORT = Number(process.env.PORT) || 8000;
+const HOST = process.env.HOST || '0.0.0.0';
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/octofit_db';
 function getApiBaseUrl() {
     const codespaceName = process.env.CODESPACE_NAME;
@@ -68,8 +69,8 @@ async function startServer() {
     try {
         await mongoose_1.default.connect(MONGODB_URI);
         console.log('Connected to MongoDB');
-        app.listen(PORT, () => {
-            console.log(`Backend listening on port ${PORT}`);
+        app.listen(PORT, HOST, () => {
+            console.log(`Backend listening on port ${PORT} on ${HOST}`);
             console.log(`API base URL: ${getApiBaseUrl()}`);
         });
     }

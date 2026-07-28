@@ -8,6 +8,7 @@ import { Workout } from './models/workout.js';
 
 const app = express();
 const PORT = Number(process.env.PORT) || 8000;
+const HOST = process.env.HOST || '0.0.0.0';
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/octofit_db';
 
 function getApiBaseUrl() {
@@ -78,8 +79,8 @@ async function startServer() {
     await mongoose.connect(MONGODB_URI);
     console.log('Connected to MongoDB');
 
-    app.listen(PORT, () => {
-      console.log(`Backend listening on port ${PORT}`);
+    app.listen(PORT, HOST, () => {
+      console.log(`Backend listening on port ${PORT} on ${HOST}`);
       console.log(`API base URL: ${getApiBaseUrl()}`);
     });
   } catch (error) {
