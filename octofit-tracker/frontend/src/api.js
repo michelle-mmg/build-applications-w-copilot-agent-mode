@@ -1,5 +1,13 @@
 const normalizeComponent = (component) => component.replace(/^\/+|\/+$/g, '');
 
+const endpointMap = {
+  activities: '/api/activities',
+  leaderboard: '/api/leaderboard',
+  teams: '/api/teams',
+  users: '/api/users',
+  workouts: '/api/workouts',
+};
+
 export function getApiBaseUrl() {
   const codespaceName = import.meta.env.VITE_CODESPACE_NAME?.trim();
 
@@ -12,7 +20,8 @@ export function getApiBaseUrl() {
 
 export function buildApiUrl(component) {
   const normalizedComponent = normalizeComponent(component);
-  return `${getApiBaseUrl()}/api/${normalizedComponent}/`;
+  const endpointPath = endpointMap[normalizedComponent] || `/api/${normalizedComponent}`;
+  return `${getApiBaseUrl()}${endpointPath}/`;
 }
 
 export function extractItems(payload) {
