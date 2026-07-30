@@ -17,6 +17,8 @@ const navItems = [
 ];
 
 function App() {
+  const apiBaseUrl = getApiBaseUrl();
+
   return (
     <main className="container py-4">
       <div className="card shadow-sm border-0">
@@ -30,12 +32,12 @@ function App() {
             </div>
             <div className="text-lg-end">
               <p className="mb-1 fw-semibold">API base</p>
-              <code className="text-muted">{getApiBaseUrl()}</code>
+              <code className="text-muted">{apiBaseUrl}</code>
             </div>
           </div>
 
           <div className="alert alert-info" role="status">
-            Define <code>VITE_CODESPACE_NAME</code> in <code>.env.local</code> (or <code>.env</code>) before running the app. If it is unset, the app falls back to localhost so the URLs stay safe and predictable.
+            Define <code>VITE_CODESPACE_NAME</code> in <code>.env.local</code> before running the app. If it is unset, the app falls back to localhost so the API URLs stay safe and predictable.
           </div>
 
           <nav className="nav nav-pills flex-wrap gap-2 mb-4">
@@ -47,24 +49,29 @@ function App() {
           </nav>
 
           <Routes>
-            <Route path="/" element={<div className="row g-4">
-              <div className="col-lg-6">
-                <div className="card h-100 border-0 bg-light">
-                  <div className="card-body">
-                    <h2 className="h5">Overview</h2>
-                    <p className="text-muted mb-0">Use the navigation above to explore users, activities, teams, leaderboard, and workouts.</p>
+            <Route
+              path="/"
+              element={
+                <div className="row g-4">
+                  <div className="col-lg-6">
+                    <div className="card h-100 border-0 bg-light">
+                      <div className="card-body">
+                        <h2 className="h5">Overview</h2>
+                        <p className="text-muted mb-0">Use the navigation above to explore users, activities, teams, leaderboard, and workouts.</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="card h-100 border-0 bg-light">
+                      <div className="card-body">
+                        <h2 className="h5">Environment-aware API</h2>
+                        <p className="text-muted mb-0">The app uses <code>import.meta.env.VITE_CODESPACE_NAME</code> to build Codespaces-friendly URLs automatically.</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="col-lg-6">
-                <div className="card h-100 border-0 bg-light">
-                  <div className="card-body">
-                    <h2 className="h5">Environment-aware API</h2>
-                    <p className="text-muted mb-0">The app uses <code>import.meta.env.VITE_CODESPACE_NAME</code> to build Codespaces-friendly URLs automatically.</p>
-                  </div>
-                </div>
-              </div>
-            </div>} />
+              }
+            />
             <Route path="/users" element={<Users />} />
             <Route path="/activities" element={<Activities />} />
             <Route path="/teams" element={<Teams />} />

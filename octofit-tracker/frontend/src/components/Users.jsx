@@ -17,7 +17,7 @@ function Users() {
         }
       } catch (err) {
         if (active) {
-          setError(err.message || 'Unable to load users.');
+          setError(err instanceof Error ? err.message : 'Unable to load users.');
         }
       } finally {
         if (active) {
@@ -35,7 +35,7 @@ function Users() {
 
   return (
     <section>
-      <div className="d-flex justify-content-between align-items-center mb-3">
+      <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-3">
         <div>
           <h2 className="h4 mb-1">Users</h2>
           <p className="text-muted mb-0">Browse the registered fitness community members.</p>
@@ -47,19 +47,23 @@ function Users() {
       {error && <div className="alert alert-danger">{error}</div>}
 
       {!loading && !error && (
-        <ul className="list-group">
-          {users.map((user, index) => (
-            <li key={user._id || user.id || `${user.name}-${index}`} className="list-group-item">
-              <div className="d-flex justify-content-between align-items-start gap-3">
-                <div>
-                  <p className="fw-semibold mb-1">{user.name || 'Unnamed user'}</p>
-                  <p className="text-muted mb-0">{user.email || 'No email provided'}</p>
+        <div className="list-group">
+          {users.length === 0 ? (
+            <div className="list-group-item text-muted">No users found.</div>
+          ) : (
+            users.map((user, index) => (
+              <div key={user._id || user.id || `${user.name}-${index}`} className="list-group-item">
+                <div className="d-flex justify-content-between align-items-start gap-3">
+                  <div>
+                    <p className="fw-semibold mb-1">{user.name || 'Unnamed user'}</p>
+                    <p className="text-muted mb-0">{user.email || 'No email provided'}</p>
+                  </div>
+                  <span className="badge bg-secondary-subtle text-secondary">{user.role || 'member'}</span>
                 </div>
-                <span className="badge bg-secondary-subtle text-secondary">{user.role || 'member'}</span>
               </div>
-            </li>
-          ))}
-        </ul>
+            ))
+          )}
+        </div>
       )}
     </section>
   );

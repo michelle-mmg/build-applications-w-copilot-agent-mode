@@ -17,7 +17,7 @@ function Activities() {
         }
       } catch (err) {
         if (active) {
-          setError(err.message || 'Unable to load activities.');
+          setError(err instanceof Error ? err.message : 'Unable to load activities.');
         }
       } finally {
         if (active) {
@@ -35,7 +35,7 @@ function Activities() {
 
   return (
     <section>
-      <div className="d-flex justify-content-between align-items-center mb-3">
+      <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-3">
         <div>
           <h2 className="h4 mb-1">Activities</h2>
           <p className="text-muted mb-0">Track recent workouts and fitness sessions.</p>
@@ -47,19 +47,23 @@ function Activities() {
       {error && <div className="alert alert-danger">{error}</div>}
 
       {!loading && !error && (
-        <ul className="list-group">
-          {activities.map((activity, index) => (
-            <li key={activity._id || activity.id || `${activity.type}-${index}`} className="list-group-item">
-              <div className="d-flex justify-content-between align-items-start gap-3">
-                <div>
-                  <p className="fw-semibold mb-1">{activity.type || 'Activity'}</p>
-                  <p className="text-muted mb-0">{activity.date || 'No date provided'}</p>
+        <div className="list-group">
+          {activities.length === 0 ? (
+            <div className="list-group-item text-muted">No activities found.</div>
+          ) : (
+            activities.map((activity, index) => (
+              <div key={activity._id || activity.id || `${activity.type}-${index}`} className="list-group-item">
+                <div className="d-flex justify-content-between align-items-start gap-3">
+                  <div>
+                    <p className="fw-semibold mb-1">{activity.type || 'Activity'}</p>
+                    <p className="text-muted mb-0">{activity.date || 'No date provided'}</p>
+                  </div>
+                  <span className="badge bg-info-subtle text-info">{activity.durationMinutes || 0} min</span>
                 </div>
-                <span className="badge bg-info-subtle text-info">{activity.durationMinutes || 0} min</span>
               </div>
-            </li>
-          ))}
-        </ul>
+            ))
+          )}
+        </div>
       )}
     </section>
   );

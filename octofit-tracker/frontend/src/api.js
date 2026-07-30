@@ -20,20 +20,18 @@ export function extractItems(payload) {
     return payload;
   }
 
-  if (Array.isArray(payload?.results)) {
-    return payload.results;
-  }
+  if (payload && typeof payload === 'object') {
+    for (const key of ['results', 'items', 'data']) {
+      const value = payload[key];
 
-  if (Array.isArray(payload?.items)) {
-    return payload.items;
-  }
+      if (Array.isArray(value)) {
+        return value;
+      }
 
-  if (Array.isArray(payload?.data)) {
-    return payload.data;
-  }
-
-  if (payload?.results && Array.isArray(payload.results.results)) {
-    return payload.results.results;
+      if (value && typeof value === 'object' && Array.isArray(value.results)) {
+        return value.results;
+      }
+    }
   }
 
   return [];

@@ -17,7 +17,7 @@ function Workouts() {
         }
       } catch (err) {
         if (active) {
-          setError(err.message || 'Unable to load workouts.');
+          setError(err instanceof Error ? err.message : 'Unable to load workouts.');
         }
       } finally {
         if (active) {
@@ -35,7 +35,7 @@ function Workouts() {
 
   return (
     <section>
-      <div className="d-flex justify-content-between align-items-center mb-3">
+      <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-3">
         <div>
           <h2 className="h4 mb-1">Workouts</h2>
           <p className="text-muted mb-0">Explore recommended exercises and training plans.</p>
@@ -47,19 +47,23 @@ function Workouts() {
       {error && <div className="alert alert-danger">{error}</div>}
 
       {!loading && !error && (
-        <ul className="list-group">
-          {workouts.map((workout, index) => (
-            <li key={workout._id || workout.id || `${workout.name}-${index}`} className="list-group-item">
-              <div className="d-flex justify-content-between align-items-start gap-3">
-                <div>
-                  <p className="fw-semibold mb-1">{workout.name || 'Workout plan'}</p>
-                  <p className="text-muted mb-0">{workout.description || 'A training routine for the next session.'}</p>
+        <div className="list-group">
+          {workouts.length === 0 ? (
+            <div className="list-group-item text-muted">No workouts found.</div>
+          ) : (
+            workouts.map((workout, index) => (
+              <div key={workout._id || workout.id || `${workout.name}-${index}`} className="list-group-item">
+                <div className="d-flex justify-content-between align-items-start gap-3">
+                  <div>
+                    <p className="fw-semibold mb-1">{workout.name || 'Workout plan'}</p>
+                    <p className="text-muted mb-0">{workout.description || 'A training routine for the next session.'}</p>
+                  </div>
+                  <span className="badge bg-warning-subtle text-warning">{workout.durationMinutes || 0} min</span>
                 </div>
-                <span className="badge bg-warning-subtle text-warning">{workout.durationMinutes || 0} min</span>
               </div>
-            </li>
-          ))}
-        </ul>
+            ))
+          )}
+        </div>
       )}
     </section>
   );

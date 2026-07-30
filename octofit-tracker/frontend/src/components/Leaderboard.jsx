@@ -17,7 +17,7 @@ function Leaderboard() {
         }
       } catch (err) {
         if (active) {
-          setError(err.message || 'Unable to load leaderboard.');
+          setError(err instanceof Error ? err.message : 'Unable to load leaderboard.');
         }
       } finally {
         if (active) {
@@ -35,7 +35,7 @@ function Leaderboard() {
 
   return (
     <section>
-      <div className="d-flex justify-content-between align-items-center mb-3">
+      <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-3">
         <div>
           <h2 className="h4 mb-1">Leaderboard</h2>
           <p className="text-muted mb-0">Watch teams climb the standings.</p>
@@ -57,13 +57,19 @@ function Leaderboard() {
               </tr>
             </thead>
             <tbody>
-              {entries.map((entry, index) => (
-                <tr key={entry._id || entry.id || `${entry.name}-${index}`}>
-                  <td>{entry.rank || index + 1}</td>
-                  <td>{entry.name || entry.teamName || entry.userName || 'Unnamed entry'}</td>
-                  <td>{entry.score || entry.points || entry.total || '—'}</td>
+              {entries.length === 0 ? (
+                <tr>
+                  <td colSpan="3" className="text-muted">No leaderboard entries found.</td>
                 </tr>
-              ))}
+              ) : (
+                entries.map((entry, index) => (
+                  <tr key={entry._id || entry.id || `${entry.name}-${index}`}>
+                    <td>{entry.rank || index + 1}</td>
+                    <td>{entry.name || entry.teamName || entry.userName || 'Unnamed entry'}</td>
+                    <td>{entry.score || entry.points || entry.total || '—'}</td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
