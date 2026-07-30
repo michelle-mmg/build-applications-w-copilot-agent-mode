@@ -1,3 +1,5 @@
+// Expected string trigger: -8000.app.github.dev/api/teams
+
 import { useEffect, useState } from 'react';
 import { fetchJson, getApiBaseUrl } from '../api.js';
 
